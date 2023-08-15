@@ -117,8 +117,11 @@ build-cnf-tests-debug: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
 # Installs build tools and other required software.
-install-tools:
+install-tools: go.sum
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
+
+go.sum: go.mod
+	go mod tidy
 
 install-mac-brew-tools:
 	brew install \
